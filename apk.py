@@ -4,17 +4,18 @@ from typing import Any, List, Sequence
 import dotbot
 
 
-class Apt(dotbot.Plugin):
+class Apk(dotbot.Plugin):
     def can_handle(self, directive: str) -> bool:
-        return directive == "apt"
+        return directive == "apk"
 
     def handle(self, directive: str, packages: List[str]) -> bool:
-        success = self._run(["apt", "update"], "Updating APT") \
-                  and self._run(["apt", "install", "-y"] + packages,
-                                "Installing the APT packages: {}".format(", ".join(packages)))
+        success = self._run(["apk", "update"], "Updating apk") and self._run(
+            ["apk", "add"] + packages,
+            "Installing the apk packages: {}".format(", ".join(packages)),
+        )
 
         if success:
-            self._log.info("APT packages installed successfully")
+            self._log.info("apk packages installed successfully")
 
         return success
 
