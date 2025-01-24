@@ -30,7 +30,7 @@ class Apk(dotbot.Plugin):
         self._strings[PkgStatus.APK_ERROR] = "ERROR: unsatisfiable constraints"
         self._strings[PkgStatus.NOT_FOUND] = "ERROR: unable to select packages"
         self._strings[PkgStatus.UPDATED] = "Upgrading"
-        self._strings[PkgStatus.INSTALLED] = "After this operation,"
+        self._strings[PkgStatus.INSTALLED] = "Installing"
         self._strings[PkgStatus.UP_TO_DATE] = "OK:"
 
     def can_handle(self, directive):
