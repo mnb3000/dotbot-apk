@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "dotbot-yay"
-version = "1.0.1"
+name = "dotbot-apk"
+version = "1.0.0"
 description = ""
 readme = "README.md"
-packages = [{include = "yay.py"}]
+packages = [{ include = "yay.py" }]
 maintainers = ["Alec Millis <theoxson@gmail.com>"]
 authors = [
-    "Alec Millis <theoxson@gmail.com>",
-    "Bjørn Polat-Snoen <bjorn.snoen@gmail.com>"
+  "Misha Mykolyshyn <misha.mykolyshyn@gmail.com",
+  "Alec Millis <theoxson@gmail.com>",
+  "Bjørn Polat-Snoen <bjorn.snoen@gmail.com>",
 ]
 
 [tool.poetry.dependencies]

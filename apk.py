@@ -12,39 +12,37 @@ class PkgStatus(Enum):
     INSTALLED = "Installed"
     UPDATED = "Updated"
     NOT_FOUND = "Not Found"
-    PACMAN_ERROR = "Pacman error, make sure pacman dbs are synced by running pacman -Sy"
+    APK_ERROR = "apk error, make sure apk dbs are synced by running apk update"
     ERROR = "Error"
     NOT_SURE = "Could not determine"
 
 
-class Yay(dotbot.Plugin):
-    _directive = "yay"
+class Apk(dotbot.Plugin):
+    _directive = "apk"
 
     def __init__(self, context):
-        super(Yay, self).__init__(self)
+        super(Apk, self).__init__(self)
         self._context = context
         self._strings = OrderedDict()
 
         # Names to search the query string for
-        self._strings[PkgStatus.ERROR] = "aborting"
-        self._strings[
-            PkgStatus.PACMAN_ERROR
-        ] = "Errors occurred, no packages were upgraded"
-        self._strings[PkgStatus.NOT_FOUND] = "Could not find all required packages"
-        self._strings[PkgStatus.UPDATED] = "Net Upgrade Size:"
-        self._strings[PkgStatus.INSTALLED] = "Total Installed Size:"
-        self._strings[PkgStatus.UP_TO_DATE] = "is up to date -- skipping"
+        self._strings[PkgStatus.ERROR] = "ERROR"
+        self._strings[PkgStatus.APK_ERROR] = "ERROR: unsatisfiable constraints"
+        self._strings[PkgStatus.NOT_FOUND] = "ERROR: unable to select packages"
+        self._strings[PkgStatus.UPDATED] = "Upgrading"
+        self._strings[PkgStatus.INSTALLED] = "After this operation,"
+        self._strings[PkgStatus.UP_TO_DATE] = "OK:"
 
     def can_handle(self, directive):
         return directive == self._directive
 
     def handle(self, directive, data):
         if directive != self._directive:
-            raise ValueError(f"Yay cannot handle directive {directive}")
+            raise ValueError(f"Apk cannot handle directive {directive}")
         return self._process(data)
 
     def _process(self, packages):
-        defaults = self._context.defaults().get("yay", {})
+        defaults = self._context.defaults().get("apk", {})
         results = {}
         successful = [PkgStatus.UP_TO_DATE, PkgStatus.UPDATED, PkgStatus.INSTALLED]
 
@@ -76,7 +74,7 @@ class Yay(dotbot.Plugin):
     def _install(self, pkg):
         # to have a unified string which we can query
         # we need to execute the command with LANG=en_US
-        cmd = f"LANG=en_US yay --needed --noconfirm -S {pkg}"
+        cmd = f"LANG=en_US apk add -v {pkg}"
 
         self._log.info(f'Installing "{pkg}". Please wait...')
 
